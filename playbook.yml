@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: update repository index
+    apt:
+      name: aria2
+      state: latest
