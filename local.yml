@@ -1,0 +1,32 @@
+- hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Add peek apt repository
+      apt_repository:
+        repo: ppa:peek-developers/stable
+        update_cache: True
+
+    - name: Add copyq apt repository
+      apt_repository:
+        repo: ppa:hluk/copyq
+        update_cache: True
+
+
+    - name: Install dependecies
+      apt:
+        name:
+          - copyq
+          - coreutils #timeout
+          - docker
+          - docker-compose
+          - elixir
+          - fd-find
+          - feh
+          - git
+          - gimp
+          - keychain
+          - pavucontrol
+          - peek
+          
