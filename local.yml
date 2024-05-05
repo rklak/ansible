@@ -1,26 +1,18 @@
 - hosts: localhost
   connection: local
-  become: true
-
-  tasks:
-    - name: Add peek apt repository
-      apt_repository:
-        repo: ppa:peek-developers/stable
-        update_cache: True
-
+  become: True
+  become_user: root
+  become_method: sudo  
+  pre_tasks:
     - name: Add copyq apt repository
       apt_repository:
         repo: ppa:hluk/copyq
-        update_cache: True
-
 
     - name: Install dependecies
       apt:
         name:
           - copyq
           - coreutils #timeout
-          - docker
-          - docker-compose
           - elixir
           - fd-find
           - feh
@@ -28,5 +20,97 @@
           - gimp
           - keychain
           - pavucontrol
-          - peek
+          - picom
+          - tmux
+          - vim
           
+    - name: Brew> Install prereq deb packages for
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+          - build-essential
+          - curl
+          - file
+          - git
+          - procps 
+          - locales
+          - language-pack-en
+
+    - name: Brew> Temporary directory
+      ansible.builtin.file:
+        path: "{{ linuxbrew_install_tmp }}"
+        state: directory
+        mode: 0700
+      become: false
+
+    - name: Brew> Download Homebrew install script
+      ansible.builtin.get_url:
+        url: "{{ linuxbrew_install_url }}"
+        dest: "{{ linuxbrew_install_tmp }}/install.sh"
+        checksum: "{{ linuxbrew_install_checksum | default(omit) }}"
+        mode: 0700
+      become: false
+
+    - name: Brew> Install Homebrew with the installer
+      ansible.builtin.command: sh -c "{{ linuxbrew_install_tmp }}/install.sh"
+      register: install_result
+      changed_when: "install_result.rc == 0"
+      become: false
+
+    - name: Brew> Remove temporary directory
+      ansible.builtin.file:
+        path: "{{ linuxbrew_install_tmp }}"
+        state: absent
+      become: false
+
+    - name: Brew> Ensure taps are added
+      homebrew_tap:
+        name: "{{ item }}"
+        state: present
+        path: "{{ linuxbrew_prefix_shared }}/bin"
+      loop:
+        - jesseduffield/lazydocker
+        - knqyf263/pet
+        - jesseduffield/lazygit
+      become: false
+      tags:
+        - now
+          
+    - name: Install Formula
+      community.general.homebrew:
+        name: 
+          - bat
+          - entr
+          - ripgrep
+          - lazydocker
+          - pet
+          - git-delta
+          - lazygit
+          - pgcli
+          - xsv
+          - neovim
+          - tmux
+          - tmuxinator
+          - httpie
+          - diff-so-fancy
+          - tree
+          - tlrc
+        state: present
+        path: "{{ linuxbrew_prefix_shared }}/bin"
+      become: false
+
+  roles:
+    - vonmecheln.vivaldi
+    - geerlingguy.docker
+    - role: gantsign.oh-my-zsh
+      users:
+        - username: radoslaw-klak
+
+  vars:
+    docker_install_compose: true     
+    linuxbrew_prefix_shared: "/home/linuxbrew/.linuxbrew"
+    linuxbrew_use_installer: true
+    linuxbrew_install_tmp: "/tmp/linuxbrew"
+    linuxbrew_install_url: "https://raw.githubusercontent.com/Homebrew/install/master/install.sh"

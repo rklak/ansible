@@ -1,0 +1,6 @@
+roles:
+  - name: vonmecheln.vivaldi
+  - name: geerlingguy.docker
+  - name: gantsign.oh-my-zsh
+collections:
+  - name: community.general
