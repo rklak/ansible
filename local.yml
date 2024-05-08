@@ -12,6 +12,7 @@
       tags: now
       apt:
         name:
+          - cbatticon #battery indicator
           - copyq
           - coreutils #timeout
           - elixir
@@ -23,6 +24,7 @@
           - gimp
           - i3lock
           - keychain
+          - light
           - pavucontrol
           - picom
           - redshift
