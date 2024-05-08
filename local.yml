@@ -9,11 +9,13 @@
         repo: ppa:hluk/copyq
 
     - name: Install dependecies
+      tags: now
       apt:
         name:
           - copyq
           - coreutils #timeout
           - elixir
+          - eza
           - fd-find
           - feh
           - flameshot
@@ -23,6 +25,7 @@
           - keychain
           - pavucontrol
           - picom
+          - redshift
           - tmux
           - vim
           
@@ -109,7 +112,6 @@
         update: no
 
     - name: Clone tmux-scripts
-      tags: now
       git:
         repo: https://github.com/rklak/tmux-scripts.git
         dest: "{{ scripts_path }}"
