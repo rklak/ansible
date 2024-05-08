@@ -26,6 +26,7 @@
           - pavucontrol
           - picom
           - redshift
+          - x11-xkb-utils #keyboard pl
           - tmux
           - vim
           
