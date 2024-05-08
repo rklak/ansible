@@ -16,8 +16,10 @@
           - elixir
           - fd-find
           - feh
+          - flameshot
           - git
           - gimp
+          - i3lock
           - keychain
           - pavucontrol
           - picom
@@ -75,8 +77,6 @@
         - knqyf263/pet
         - jesseduffield/lazygit
       become: false
-      tags:
-        - now
           
     - name: Install Formula
       community.general.homebrew:
@@ -101,6 +101,21 @@
         path: "{{ linuxbrew_prefix_shared }}/bin"
       become: false
 
+    - name: Clone i3-volume
+      git:
+        repo: https://github.com/hastinbe/i3-volume.git
+        dest: "{{ i3_volume_path }}"
+        clone: yes
+        update: no
+
+    - name: Clone tmux-scripts
+      tags: now
+      git:
+        repo: https://github.com/rklak/tmux-scripts.git
+        dest: "{{ scripts_path }}"
+        clone: yes
+        update: no
+
   roles:
     - vonmecheln.vivaldi
     - geerlingguy.docker
@@ -114,3 +129,5 @@
     linuxbrew_use_installer: true
     linuxbrew_install_tmp: "/tmp/linuxbrew"
     linuxbrew_install_url: "https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
+    i3_volume_path: "/home/radoslaw-klak/i3-volume"
+    scripts_path: "/home/radoslaw-klak/scripts"
