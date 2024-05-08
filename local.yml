@@ -29,6 +29,7 @@
           - picom
           - redshift
           - x11-xkb-utils #keyboard pl
+          - xclip
           - tmux
           - vim
           
@@ -88,6 +89,7 @@
       community.general.homebrew:
         name: 
           - bat
+          - chezmoi  
           - entr
           - ripgrep
           - lazydocker
