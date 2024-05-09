@@ -133,6 +133,7 @@
   roles:
     - vonmecheln.vivaldi
     - geerlingguy.docker
+    - gantsign.ansible-role-golang
     - role: gantsign.oh-my-zsh
       users:
         - username: radoslaw-klak

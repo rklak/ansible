@@ -2,5 +2,6 @@ roles:
   - name: vonmecheln.vivaldi
   - name: geerlingguy.docker
   - name: gantsign.oh-my-zsh
+  - name: gantsign.ansible-role-golang
 collections:
   - name: community.general
