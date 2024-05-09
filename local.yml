@@ -9,7 +9,6 @@
         repo: ppa:hluk/copyq
 
     - name: Install dependecies
-      tags: now
       apt:
         name:
           - cbatticon #battery indicator
@@ -86,7 +85,8 @@
         - jesseduffield/lazygit
       become: false
           
-    - name: Install Formula
+    - name: Brew> Install Formula
+      tags: now
       community.general.homebrew:
         name: 
           - bat
@@ -106,6 +106,7 @@
           - diff-so-fancy
           - tree
           - tlrc
+          - zsh-autosuggestions
         state: present
         path: "{{ linuxbrew_prefix_shared }}/bin"
       become: false
@@ -133,7 +134,6 @@
   roles:
     - vonmecheln.vivaldi
     - geerlingguy.docker
-    - gantsign.ansible-role-golang
     - role: gantsign.oh-my-zsh
       users:
         - username: radoslaw-klak
@@ -147,6 +147,7 @@
     i3_volume_path: "/home/radoslaw-klak/i3-volume"
     scripts_path: "/home/radoslaw-klak/scripts"
     scripts_repo: "https://github.com/rklak/tmux-scripts.git"
+    oh_my_zsh_write_zshrc: false
     chezmoi_repo: "https://github.com/rklak/dotfiles.git"
     chezmoi_user_home: "/home/radoslaw-klak"
     chezmoi_source_dir: "{{ chezmoi_user_home }}/.local/share/chezmoi"
