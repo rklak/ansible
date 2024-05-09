@@ -9,6 +9,7 @@
         repo: ppa:hluk/copyq
 
     - name: Install dependecies
+      tags: now
       apt:
         name:
           - cbatticon #battery indicator
@@ -26,6 +27,7 @@
           - light
           - pavucontrol
           - picom
+          - ranger
           - redshift
           - x11-xkb-utils #keyboard pl
           - xclip
@@ -123,7 +125,6 @@
         update: yes
 
     - name: Copy dotfiles
-      tags: now
       ansible.builtin.command:
         cmd: "chezmoi init --guess-repo-url=false --apply {{ chezmoi_repo }}"
         chdir: "{{ chezmoi_user_home }}"
