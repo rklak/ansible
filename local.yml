@@ -9,7 +9,6 @@
         repo: ppa:hluk/copyq
 
     - name: Install dependecies
-      tags: now
       apt:
         name:
           - cbatticon #battery indicator
@@ -118,11 +117,18 @@
 
     - name: Clone tmux-scripts
       git:
-        repo: https://github.com/rklak/tmux-scripts.git
+        repo: "{{ scripts_repo }}"
         dest: "{{ scripts_path }}"
         clone: yes
-        update: no
+        update: yes
 
+    - name: Copy dotfiles
+      tags: now
+      ansible.builtin.command:
+        cmd: "chezmoi init --guess-repo-url=false --apply {{ chezmoi_repo }}"
+        chdir: "{{ chezmoi_user_home }}"
+        creates: "{{ chezmoi_source_dir  }}"
+          
   roles:
     - vonmecheln.vivaldi
     - geerlingguy.docker
@@ -138,3 +144,7 @@
     linuxbrew_install_url: "https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
     i3_volume_path: "/home/radoslaw-klak/i3-volume"
     scripts_path: "/home/radoslaw-klak/scripts"
+    scripts_repo: "https://github.com/rklak/tmux-scripts.git"
+    chezmoi_repo: "https://github.com/rklak/dotfiles.git"
+    chezmoi_user_home: "/home/radoslaw-klak"
+    chezmoi_source_dir: "{{ chezmoi_user_home }}/.local/share/chezmoi"
