@@ -19,6 +19,7 @@
           - fd-find
           - feh
           - flameshot
+          - fontconfig
           - git
           - gimp
           - i3lock
@@ -28,6 +29,7 @@
           - picom
           - ranger
           - redshift
+          - rsync
           - x11-xkb-utils #keyboard pl
           - xclip
           - tmux
@@ -130,10 +132,24 @@
         cmd: "chezmoi init --guess-repo-url=false --apply {{ chezmoi_repo }}"
         chdir: "{{ chezmoi_user_home }}"
         creates: "{{ chezmoi_source_dir  }}"
+
+    - name: Clone NvChad for neovim
+      git:
+        repo: "{{ nvchad_repo }}"
+        dest: "{{ nvchad_path }}"
+        clone: yes
+        update: yes
+      become: false
           
+    - name: Install firefox
+      community.general.snap:
+        name:
+          - firefox
+
   roles:
     - vonmecheln.vivaldi
     - geerlingguy.docker
+    - role: hurricanehrndz.nerdfonts
     - role: gantsign.oh-my-zsh
       users:
         - username: radoslaw-klak
@@ -151,3 +167,6 @@
     chezmoi_repo: "https://github.com/rklak/dotfiles.git"
     chezmoi_user_home: "/home/radoslaw-klak"
     chezmoi_source_dir: "{{ chezmoi_user_home }}/.local/share/chezmoi"
+    nvchad_repo: "https://github.com/NvChad/starter"
+    nvchad_path: "/home/radoslaw-klak/.config/nvim"
+    nerdfonts_users: [radoslaw-klak]
