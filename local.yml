@@ -86,7 +86,6 @@
       become: false
           
     - name: Brew> Install Formula
-      tags: now
       community.general.homebrew:
         name: 
           - bat
@@ -100,6 +99,7 @@
           - pgcli
           - xsv
           - neovim
+          - ouch
           - tmux
           - tmuxinator
           - httpie
