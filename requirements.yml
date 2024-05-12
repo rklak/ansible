@@ -4,5 +4,6 @@ roles:
   - name: gantsign.oh-my-zsh
   - name: gantsign.ansible-role-golang
   - name: hurricanehrndz.nerdfonts
+  - name: geerlingguy.nodejs
 collections:
   - name: community.general

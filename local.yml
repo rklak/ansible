@@ -138,7 +138,7 @@
         repo: "{{ nvchad_repo }}"
         dest: "{{ nvchad_path }}"
         clone: yes
-        update: yes
+        update: no
       become: false
           
     - name: Install firefox
@@ -149,6 +149,8 @@
   roles:
     - vonmecheln.vivaldi
     - geerlingguy.docker
+    - role: geerlingguy.nodejs
+      tags: now
     - role: hurricanehrndz.nerdfonts
     - role: gantsign.oh-my-zsh
       users:
