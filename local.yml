@@ -9,6 +9,7 @@
         repo: ppa:hluk/copyq
 
     - name: Install dependecies
+      tags: now
       apt:
         name:
           - cbatticon #battery indicator
@@ -27,6 +28,7 @@
           - light
           - pavucontrol
           - picom
+          - python3.12-venv
           - ranger
           - redshift
           - rsync
@@ -150,7 +152,6 @@
     - vonmecheln.vivaldi
     - geerlingguy.docker
     - role: geerlingguy.nodejs
-      tags: now
     - role: hurricanehrndz.nerdfonts
     - role: gantsign.oh-my-zsh
       users:
