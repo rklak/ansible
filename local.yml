@@ -9,7 +9,6 @@
         repo: ppa:hluk/copyq
 
     - name: Install dependecies
-      tags: now
       apt:
         name:
           - cbatticon #battery indicator
@@ -36,7 +35,47 @@
           - xclip
           - tmux
           - vim
-          
+
+    - name: mkdir ~/.tmux/plugins
+      become: false
+      file:
+        path: "{{ user_home }}/.tmux/plugins"
+        state: directory
+
+    - name: Clone the tpm repository
+      become: false
+      git:
+        repo: "https://github.com/tmux-plugins/tpm"
+        dest: "{{ user_home}}/.tmux/plugins/tpm"
+
+    - name: Check if GPG key exists
+      become: false
+      tags: now
+      command: "gpg --list-secret-keys {{ gpg_id }}"
+      register: gpg_key_check
+      changed_when: gpg_key_check.rc != 0
+      failed_when: false
+
+    - name: Import GPG
+      become: false
+      tags: now
+      ansible.builtin.shell: "op document get {{ op_gpg_id }} | gpg --import"
+      when: gpg_key_check.rc != 0
+
+    - name: Set git config gpg sign
+      become: false
+      git_config:
+        name: commit.gpgsign
+        scope: global
+        value: true
+
+    - name: Set git config gpg key
+      become: false
+      git_config:
+        name: user.signingkey
+        scope: global
+        value: "{{ gpg_id }}"
+
     - name: Brew> Install prereq deb packages for
       apt:
         name: "{{ packages }}"
@@ -132,21 +171,20 @@
     - name: Copy dotfiles
       ansible.builtin.command:
         cmd: "chezmoi init --guess-repo-url=false --apply {{ chezmoi_repo }}"
-        chdir: "{{ chezmoi_user_home }}"
+        chdir: "{{ user_home }}"
         creates: "{{ chezmoi_source_dir  }}"
 
-    - name: Clone NvChad for neovim
-      git:
-        repo: "{{ nvchad_repo }}"
-        dest: "{{ nvchad_path }}"
-        clone: yes
-        update: no
-      become: false
-          
     - name: Install firefox
       community.general.snap:
         name:
           - firefox
+
+    - name: Install crontab
+      become: false
+      ansible.builtin.cron:
+        name: "Change wallpaper"
+        minute: "1"
+        job: "sh {{ scripts_path }}/wallpaper.sh 2>&1 | logger -t wall"
 
   roles:
     - vonmecheln.vivaldi
@@ -158,6 +196,7 @@
         - username: radoslaw-klak
 
   vars:
+    user_home: "/home/radoslaw-klak"
     docker_install_compose: true     
     linuxbrew_prefix_shared: "/home/linuxbrew/.linuxbrew"
     linuxbrew_use_installer: true
@@ -168,8 +207,7 @@
     scripts_repo: "https://github.com/rklak/tmux-scripts.git"
     oh_my_zsh_write_zshrc: false
     chezmoi_repo: "https://github.com/rklak/dotfiles.git"
-    chezmoi_user_home: "/home/radoslaw-klak"
-    chezmoi_source_dir: "{{ chezmoi_user_home }}/.local/share/chezmoi"
-    nvchad_repo: "https://github.com/NvChad/starter"
-    nvchad_path: "/home/radoslaw-klak/.config/nvim"
+    chezmoi_source_dir: "{{ user_home }}/.local/share/chezmoi"
     nerdfonts_users: [radoslaw-klak]
+    op_gpg_id: "nezivdzc5rcrgehnxm3cjjsx4q"
+    gpg_id: "C9C883263380855C"
