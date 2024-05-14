@@ -9,6 +9,7 @@
         repo: ppa:hluk/copyq
 
     - name: Install dependecies
+      tags: now
       apt:
         name:
           - cbatticon #battery indicator
@@ -24,6 +25,7 @@
           - gimp
           - i3lock
           - keychain
+          - libfuse2
           - light
           - pavucontrol
           - picom
@@ -50,7 +52,6 @@
 
     - name: Check if GPG key exists
       become: false
-      tags: now
       command: "gpg --list-secret-keys {{ gpg_id }}"
       register: gpg_key_check
       changed_when: gpg_key_check.rc != 0
@@ -58,7 +59,6 @@
 
     - name: Import GPG
       become: false
-      tags: now
       ansible.builtin.shell: "op document get {{ op_gpg_id }} | gpg --import"
       when: gpg_key_check.rc != 0
 
@@ -126,6 +126,7 @@
         - jesseduffield/lazydocker
         - knqyf263/pet
         - jesseduffield/lazygit
+        - wez/wezterm-linuxbrew
       become: false
           
     - name: Brew> Install Formula
@@ -149,6 +150,7 @@
           - diff-so-fancy
           - tree
           - tlrc
+          - wezterm
           - zsh-autosuggestions
         state: present
         path: "{{ linuxbrew_prefix_shared }}/bin"
