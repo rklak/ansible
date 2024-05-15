@@ -187,13 +187,20 @@
         minute: "1"
         job: "sh {{ scripts_path }}/wallpaper.sh 2>&1 | logger -t wall"
 
+    - name: Install nvm
+      tags: now
+      become: false
+      ansible.builtin.shell: >
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+      args:
+        creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+
   roles:
     - vonmecheln.vivaldi
     - geerlingguy.docker
     - role: geerlingguy.nodejs
     - role: hurricanehrndz.nerdfonts
     - role: buluma.npm
-      tags: now
     - role: gantsign.oh-my-zsh
       users:
         - username: radoslaw-klak
