@@ -127,7 +127,7 @@
         - jesseduffield/lazygit
         - wez/wezterm-linuxbrew
       become: false
-          
+
     - name: Brew> Install Formula
       community.general.homebrew:
         name: 
@@ -188,16 +188,26 @@
         job: "sh {{ scripts_path }}/wallpaper.sh 2>&1 | logger -t wall"
 
     - name: Install nvm
-      tags: now
       become: false
       ansible.builtin.shell: >
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
       args:
         creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
 
+    - name: Create "docker" group
+      group:
+        name: "docker"
+        state: present
+
+    - name: Add user to "docker" group
+      user:
+        name: "{{ user }}"
+        group: "docker"
+        append: yes
+
   roles:
-    - vonmecheln.vivaldi
-    - geerlingguy.docker
+    - role: vonmecheln.vivaldi
+    - role: geerlingguy.docker
     - role: geerlingguy.nodejs
     - role: hurricanehrndz.nerdfonts
     - role: buluma.npm
@@ -206,14 +216,15 @@
         - username: radoslaw-klak
 
   vars:
-    user_home: "/home/radoslaw-klak"
+    user: "radoslaw-klak"
+    user_home: "/home/{{ user }}"
     docker_install_compose: true     
     linuxbrew_prefix_shared: "/home/linuxbrew/.linuxbrew"
     linuxbrew_use_installer: true
     linuxbrew_install_tmp: "/tmp/linuxbrew"
     linuxbrew_install_url: "https://raw.githubusercontent.com/Homebrew/install/master/install.sh"
-    i3_volume_path: "/home/radoslaw-klak/i3-volume"
-    scripts_path: "/home/radoslaw-klak/scripts"
+    i3_volume_path: "{{ user_home }}/i3-volume"
+    scripts_path: "{{ user_home }}/scripts"
     scripts_repo: "https://github.com/rklak/tmux-scripts.git"
     oh_my_zsh_write_zshrc: false
     chezmoi_repo: "https://github.com/rklak/dotfiles.git"
