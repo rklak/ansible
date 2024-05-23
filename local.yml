@@ -9,6 +9,7 @@
         repo: ppa:hluk/copyq
 
     - name: Install dependecies
+      tags: now
       apt:
         name:
           - cbatticon #battery indicator
@@ -19,6 +20,7 @@
           - fd-find
           - feh
           - flameshot
+          - fonts-firacode
           - fontconfig
           - git
           - gimp
@@ -129,7 +131,6 @@
       become: false
 
     - name: Brew> Install Formula
-      tags: now
       community.general.homebrew:
         name: 
           - bat
