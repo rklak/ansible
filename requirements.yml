@@ -2,7 +2,7 @@ roles:
   - name: vonmecheln.vivaldi
   - name: geerlingguy.docker
   - name: gantsign.oh-my-zsh
-  - name: gantsign.ansible-role-golang
+  - name: gantsign.golang
   - name: hurricanehrndz.nerdfonts
   - name: geerlingguy.nodejs
   - name: buluma.npm

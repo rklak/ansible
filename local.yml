@@ -9,7 +9,6 @@
         repo: ppa:hluk/copyq
 
     - name: Install dependecies
-      tags: now
       apt:
         name:
           - cbatticon #battery indicator
@@ -213,6 +212,8 @@
     - role: vonmecheln.vivaldi
     - role: geerlingguy.docker
     - role: geerlingguy.nodejs
+    - role: gantsign.golang
+      tags: now
     - role: hurricanehrndz.nerdfonts
     - role: buluma.npm
     - role: gantsign.oh-my-zsh
