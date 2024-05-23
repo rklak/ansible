@@ -129,9 +129,11 @@
       become: false
 
     - name: Brew> Install Formula
+      tags: now
       community.general.homebrew:
         name: 
           - bat
+          - btop
           - chezmoi  
           - entr
           - ripgrep
@@ -139,6 +141,7 @@
           - pet
           - git-delta
           - lazygit
+          - jless
           - pgcli
           - xsv
           - neovim
