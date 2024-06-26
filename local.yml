@@ -8,12 +8,19 @@
       apt_repository:
         repo: ppa:hluk/copyq
 
+    - name: Add peek apt repository
+      apt_repository:
+        repo: ppa:peek-developers/stable
+
     - name: Install dependecies
+      tags: now
       apt:
         name:
           - cbatticon #battery indicator
           - copyq
           - coreutils #timeout
+          - default-jre
+          - default-jdk
           - elixir
           - eza
           - fd-find
@@ -28,6 +35,7 @@
           - libfuse2
           - light
           - pavucontrol
+          - peek
           - picom
           - python3.12-venv
           - ranger
@@ -213,7 +221,6 @@
     - role: geerlingguy.docker
     - role: geerlingguy.nodejs
     - role: gantsign.golang
-      tags: now
     - role: hurricanehrndz.nerdfonts
     - role: buluma.npm
     - role: gantsign.oh-my-zsh
