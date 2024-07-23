@@ -17,3 +17,8 @@ Locally with become privilege
 ```bash
 ansible-playbook -bK local.yml
 ```
+
+or with specific tag like "now":
+```bash
+ansible-playbook -bK --tags now local.yml
+```
