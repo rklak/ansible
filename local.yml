@@ -13,7 +13,6 @@
         repo: ppa:peek-developers/stable
 
     - name: Install dependecies
-      tags: now
       apt:
         name:
           - cbatticon #battery indicator
@@ -135,6 +134,7 @@
         - knqyf263/pet
         - jesseduffield/lazygit
         - wez/wezterm-linuxbrew
+        - hashicorp/tap
       become: false
 
     - name: Brew> Install Formula
@@ -162,6 +162,7 @@
           - tlrc
           - wezterm
           - zsh-autosuggestions
+          - hashicorp/tap/terraform
         state: present
         path: "{{ linuxbrew_prefix_shared }}/bin"
       become: false
