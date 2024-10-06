@@ -12,12 +12,16 @@
       apt_repository:
         repo: ppa:peek-developers/stable
 
+    - name: Add obs studio apt repository
+      apt_repository:
+        repo: ppa:obsproject/obs-studio
+
     - name: Install dependecies
       apt:
         name:
-          - cbatticon #battery indicator
+          - cbatticon # battery indicator
           - copyq
-          - coreutils #timeout
+          - coreutils # timeout
           - default-jre
           - default-jdk
           - elixir
@@ -33,6 +37,8 @@
           - keychain
           - libfuse2
           - light
+          - ffmpeg # obs-studo
+          - obs-studio
           - pavucontrol
           - peek
           - picom
@@ -40,7 +46,7 @@
           - ranger
           - redshift
           - rsync
-          - x11-xkb-utils #keyboard pl
+          - x11-xkb-utils # keyboard pl
           - xclip
           - tmux
           - vim
@@ -191,6 +197,14 @@
       community.general.snap:
         name:
           - firefox
+        state: present
+
+    - name: Install Obsidian
+      tags: now
+      community.general.snap:
+        name: obsidian
+        classic: true
+        state: present
 
     - name: Install crontab
       become: false
